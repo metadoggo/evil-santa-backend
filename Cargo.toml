@@ -1,0 +1,45 @@
+[package]
+name = "evil-santa"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+axum = { version = "0.7" }
+axum-extra = { version = "0.9.0", features = ["form", "typed-header"] }
+chrono = { version = "0.4", features = ["serde"] }
+firebase-auth = { git = "https://github.com/huyffs/firebase-auth.git", features = [
+  "axum",
+] }
+futures-util = { version = "0.3.29", features = ["alloc"] }
+http = "1.0"
+is_empty = "0.2.0"
+jsonwebtoken = "9"
+reqwest = { version = "0.11.22", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_repr = "0.1.17"
+serde_with = { version = "3.4", features = ["json", "chrono_0_4", "macros"] }
+sqlx = { version = "0.7.3", features = [
+  "chrono",
+  "macros",
+  "postgres",
+  "runtime-tokio",
+  "tls-native-tls",
+  "uuid",
+] }
+thiserror = "1.0.50"
+tokio = { version = "1", features = [
+  "macros",
+  "sync",
+  "time",
+  "rt-multi-thread",
+] }
+tokio-stream = { version = "0.1.14", features = ["sync"] }
+tower = "0.4.13"
+tower-http = { version = "0.5.0", features = ["cors", 'trace'] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1.6", features = ["v4", "fast-rng", "serde"] }

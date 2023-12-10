@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE games SET\n      player_id = NULL,\n      present_id = NULL,\n      updated_at = NOW()\n    WHERE id = $1\n    RETURNING updated_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "updated_at",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "aa7584da3d21292bffa0f22c121ff2b69b91ecfa1caf17cfd6f439a4368d60b8"
+}

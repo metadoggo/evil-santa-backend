@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE presents SET player_id = NULL, updated_at = NOW() WHERE game_id = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "cdce6dae685afdff5509b9efdf03133c9b510970b4f26986f8caf98c60928ed4"
+}
