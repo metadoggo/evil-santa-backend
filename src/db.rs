@@ -5,6 +5,7 @@ use sqlx::{Postgres, QueryBuilder};
 pub mod games;
 pub mod players;
 pub mod presents;
+pub mod sqlx_macro;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {

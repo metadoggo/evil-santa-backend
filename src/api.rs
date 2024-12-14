@@ -98,12 +98,12 @@ impl Server {
 }
 
 // home
-pub async fn home() -> &'static str {
+async fn home() -> &'static str {
   "Hello, World!"
 }
 
 // check health
-pub async fn health(State(db): State<sqlx::PgPool>) -> (StatusCode, &'static str) {
+async fn health(State(db): State<sqlx::PgPool>) -> (StatusCode, &'static str) {
   match db::health(&db).await {
     Ok(()) => (StatusCode::OK, "👍 Healthy!"),
     _ => (StatusCode::INTERNAL_SERVER_ERROR, "😭 Degraded!"),
@@ -142,33 +142,10 @@ where
         .map_err(http_error_handler(StatusCode::BAD_REQUEST))?;
 
     let app_state = AppState::from_ref(state);
-    match app_state.firebase_auth.verify(bearer.token()) {
-      Some(current_user) => Ok(current_user),
-      None => Err(http_error(StatusCode::UNAUTHORIZED)),
-    }
-  }
-}
-
-#[derive(Clone)]
-pub struct MaybeUser(pub Option<MyFirebaseUser>);
-
-#[async_trait]
-impl<S> FromRequestParts<S> for MaybeUser
-where
-  S: Send + Sync,
-  AppState: FromRef<S>,
-{
-  type Rejection = (StatusCode, String);
-
-  async fn from_request_parts(parts: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
-    let TypedHeader(Authorization(bearer)) =
-      match TypedHeader::<Authorization<Bearer>>::from_request_parts(parts, state).await {
-        Ok(b) => b,
-        Err(_) => return Ok(Self(None)),
-      };
-
-    let app_state = AppState::from_ref(state);
-    Ok(Self(app_state.firebase_auth.verify(bearer.token())))
+    app_state
+      .firebase_auth
+      .verify(bearer.token())
+      .map_err(|_| http_error(StatusCode::UNAUTHORIZED))
   }
 }
 

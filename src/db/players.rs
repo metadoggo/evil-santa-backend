@@ -49,12 +49,13 @@ pub async fn create(
   p: CreateParams,
 ) -> Result<CreateResult<i64>, Error> {
   // QueryBuilder::<Postgres>::new("INSERT INTO players(name, images) VALUES (?, ?, ?) RESTURNING id, created_at")
-  query_as(
-    "INSERT INTO players (game_id, name, images) VALUES ($1, $2, $3, $4) RETURNING id, created_at",
+  query_as!(
+    CreateResult::<i64>,
+    "INSERT INTO players (game_id, name, images) VALUES ($1, $2, $3) RETURNING id, created_at",
+    game_id,
+    p.name,
+    &p.images
   )
-  .bind(game_id)
-  .bind(p.name)
-  .bind(p.images)
   .fetch_one(db)
   .await
   .map_err(handle_pg_error)
