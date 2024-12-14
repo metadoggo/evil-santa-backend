@@ -1,9 +1,9 @@
 build:
-  export RELEASE_VERSION=$(shell date +"%Y-%m-%d_%T" )
-  @cargo build
+	export RELEASE_VERSION=$(shell date +"%Y-%m-%d_%T" )
+	@cargo build
 
 release:
-  export RELEASE_VERSION=$(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match || date +"%Y-%m-%d_%T" )
+	export RELEASE_VERSION=$(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match || date +"%Y-%m-%d_%T" )
 	@cargo build --release
 
 clean:
